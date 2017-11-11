@@ -1,0 +1,50 @@
+package Example;
+
+import java_cup.runtime.*;
+
+parser code {:
+	public static void main(String args[]) throws Exception {
+		SymbolFactory sf = new DefaultSymbolFactory();
+		if (args.length==0) new Parser(new Scanner(System.in,sf),sf).parse();
+		else new Parser(new Scanner(new java.io.FileInputStream(args[0]),sf),sf).parse();
+	}
+:}
+
+// Terminal tokens
+terminal COMMA, LSQBRACKET, RSQBRACKET, LCURLY, RCURLY, COLON;
+terminal Integer NUMBER;
+terminal String STRING;
+terminal Boolean TRUE;
+terminal Boolean FALSE;
+terminal NULL;
+
+// Non-terminal tokens
+non terminal success, valid_json, object, members, pair, array, elements, value;
+
+// Print message if parsing was successful
+success ::= valid_json  {: System.out.println("\nParsing completed successfully. No errors were detected"); :};
+
+// Ensure valid JSON
+valid_json ::= object | array;
+
+// An object is an unordered set of name/value pairs. An object begins with "{"
+// (left curly bracket) and ends with "}" (right curly bracket).
+object ::= (LCURLY RCURLY)|(LCURLY members RCURLY);
+
+// Members must contain at least one pair and different pairs should be separated
+// by a "," (comma)
+members ::= pair | pair COMMA members;
+
+// A pair consists a string and value separated by ":" (colon)
+pair ::= STRING COLON value;
+
+// An array is an ordered collection of values. An array begins with "[" (left
+// bracket) and ends with "]" (right bracket). Values are separated by , (comma).
+array ::= LSQBRACKET RSQBRACKET | LSQBRACKET elements RSQBRACKET;
+
+// Elements requires values to be separated by "," (comma)
+elements ::= value | value COMMA elements;
+
+// A value can be a string in double quotes, or a number, or true or false or
+// null, or an object or an array. These structures can be nested.
+value ::= STRING | NUMBER | object | array | TRUE | FALSE | NULL;
