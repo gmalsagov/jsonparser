@@ -14,15 +14,19 @@ Make sure that you changed your directory to the Parser’s folder. To execute t
 To change your input file, replace input.test by the name of desired test file located in the same folder.
 
 
+
 SCANNER FILE
 
 The Scanner performs lexical analysis of the software that the user is trying to compile. In essence, lexer recognizes words and symbols in the source code and converts them into a stream of tokens (a sequence of characters that represents a grammatically correct unit in programming language). A common way to describe these tokens is by using regular expressions, or regex, as given by ECMA-404 JSON standards available in the link mentioned above. Once regex is matched, corresponding action is performed. At this stage, comments and blank spaces are eliminated as well.
+
 Initially, basic regex macros were defined (‘digit’ and ‘char’) which resulted in forming more complex macros such as ‘number’ and ‘string’. This allowed for the construction of the tokens which then can be inserted into the parser file. The scanner also scans for permitted JSON punctuation tokens (such as brackets, commas and colons) and outputs appropriate symbols to the parser file.
+
 
 
 PARSER FILE
 
 Within the parser file, grammar rules and tokens (terminal and nonterminal symbols) are defined. The terminal symbols are fundamental symbols characterised by a formal grammar (with no associated values such as punctuation grammar and with associated values such as String String and Integer number), whilst non-terminal symbols are created from terminal symbols using grammar rules. The same notation was used as in the JSON.org website given in the coursework brief for symbols and grammar rules. To determine if a parsing was successful, the console prints: "Parsing completed successfully. No errors were detected." and if there is an error, it prints the default error messages for syntax and illegal char errors.
+
 
 
 TESTS
